@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse Project Gantt Chart</title>
+    <style>
+        :root {
+            --bg: #f4f7fb;
+            --card: #ffffff;
+            --text: #13233a;
+            --muted: #5f6f87;
+            --line: #d9e1ec;
+            --leader: #ff8a00;
+            --member-a: #1f7ae0;
+            --member-b: #00a67e;
+            --team: #7a4de8;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #eaf1ff 0%, #f6fbff 45%, #edfdf7 100%);
+            color: var(--text);
+            padding: 28px;
+        }
+
+        .wrap {
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: var(--card);
+            border-radius: 18px;
+            padding: 22px 24px;
+            box-shadow: 0 10px 28px rgba(23, 49, 94, 0.09);
+            border: 1px solid rgba(15, 35, 66, 0.08);
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            margin: 0;
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        .team {
+            margin-top: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            background: #f2f6fb;
+            border: 1px solid #d8e2ef;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex: 0 0 10px;
+        }
+
+        .dot-leader {
+            background: var(--leader);
+        }
+
+        .dot-member-a {
+            background: var(--member-a);
+        }
+
+        .dot-member-b {
+            background: var(--member-b);
+        }
+
+        .dot-team {
+            background: var(--team);
+        }
+
+        .board {
+            background: var(--card);
+            border-radius: 18px;
+            box-shadow: 0 10px 28px rgba(23, 49, 94, 0.09);
+            border: 1px solid rgba(15, 35, 66, 0.08);
+            overflow-x: auto;
+            padding: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 980px;
+            table-layout: fixed;
+        }
+
+        thead th {
+            background: #f2f6fc;
+            color: #1e3354;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1px solid var(--line);
+            padding: 10px 8px;
+        }
+
+        tbody td {
+            border: 1px solid var(--line);
+            padding: 8px;
+            font-size: 13px;
+            color: #233854;
+            height: 40px;
+            text-align: center;
+            background: #fff;
+        }
+
+        .col-task {
+            width: 300px;
+            text-align: left;
+            font-weight: 600;
+            background: #fbfdff;
+        }
+
+        .col-owner {
+            width: 220px;
+            text-align: left;
+            font-weight: 600;
+            background: #fbfdff;
+        }
+
+        .slot {
+            background: #ffffff;
+        }
+
+        .bar-leader {
+            background: color-mix(in srgb, var(--leader) 24%, #ffffff);
+            box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--leader) 65%, #ffffff);
+        }
+
+        .bar-member-a {
+            background: color-mix(in srgb, var(--member-a) 24%, #ffffff);
+            box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--member-a) 65%, #ffffff);
+        }
+
+        .bar-member-b {
+            background: color-mix(in srgb, var(--member-b) 24%, #ffffff);
+            box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--member-b) 65%, #ffffff);
+        }
+
+        .bar-team {
+            background: color-mix(in srgb, var(--team) 20%, #ffffff);
+            box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--team) 62%, #ffffff);
+        }
+
+        .legend {
+            margin-top: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .legend .chip {
+            font-weight: 500;
+            background: #fafcff;
+        }
+
+        .footer-note {
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        @media (max-width: 720px) {
+            body {
+                padding: 14px;
+            }
+
+            h1 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <section class="header">
+            <h1>Warehouse Inventory Management System<br>Gantt Chart (8 Weeks)</h1>
+            <p class="subtitle">Project timeline and ownership for implementation, testing, and delivery.</p>
+            <div class="team">
+                <span class="chip"><span class="dot dot-leader"></span>Leader: Wilson Tan Kim Hoong</span>
+                <span class="chip"><span class="dot dot-member-a"></span>Member: Ambrose Khoo Kai Sen</span>
+                <span class="chip"><span class="dot dot-member-b"></span>Member: Lam Wei Sheng</span>
+            </div>
+        </section>
+
+        <section class="board">
+            <table aria-label="Gantt chart table">
+                <thead>
+                    <tr>
+                        <th class="col-task">Task</th>
+                        <th class="col-owner">Owner</th>
+                        <th>W1</th>
+                        <th>W2</th>
+                        <th>W3</th>
+                        <th>W4</th>
+                        <th>W5</th>
+                        <th>W6</th>
+                        <th>W7</th>
+                        <th>W8</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-task">Requirement Analysis and Scope</td>
+                        <td class="col-owner">Wilson + Team</td>
+                        <td class="bar-team"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-task">Database Design and Schema Setup</td>
+                        <td class="col-owner">Ambrose</td>
+                        <td class="bar-member-a"></td>
+                        <td class="bar-member-a"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-task">UI Layout and Navigation</td>
+                        <td class="col-owner">Lam</td>
+                        <td class="slot"></td>
+                        <td class="bar-member-b"></td>
+                        <td class="bar-member-b"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-task">Authentication and Role Control</td>
+                        <td class="col-owner">Wilson</td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="bar-leader"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-task">Items Module (Create, Update, Delete, Search)</td>
+                        <td class="col-owner">Ambrose + Wilson</td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="bar-member-a"></td>
+                        <td class="bar-leader"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-task">Stock Movement and Quantity Validation</td>
+                        <td class="col-owner">Wilson + Ambrose</td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="bar-team"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-task">Report Module and Revenue Summary</td>
+                        <td class="col-owner">Lam + Ambrose</td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="bar-team"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-task">Integration Testing and Bug Fixing</td>
+                        <td class="col-owner">All Team Members</td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="bar-team"></td>
+                        <td class="slot"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-task">Deployment, Documentation, Presentation</td>
+                        <td class="col-owner">Wilson + Team</td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="slot"></td>
+                        <td class="bar-team"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="legend">
+                <span class="chip"><span class="dot dot-leader"></span>Leader task</span>
+                <span class="chip"><span class="dot dot-member-a"></span>Ambrose focus task</span>
+                <span class="chip"><span class="dot dot-member-b"></span>Lam focus task</span>
+                <span class="chip"><span class="dot dot-team"></span>Shared team task</span>
+            </div>
+            <p class="footer-note">Tip: Open this file in browser and take a screenshot for your slide.</p>
+        </section>
+    </div>
+</body>
+
+</html>

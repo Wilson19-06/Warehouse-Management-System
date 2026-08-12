@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Database
+db/warehouse.db
+db/*.db
+# MySQL config (if you want to keep credentials private)
+# db/config.js
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment variables / local secrets
+.env
+.env.local
+config.php
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
