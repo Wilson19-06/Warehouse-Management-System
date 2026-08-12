@@ -16,6 +16,24 @@ A simple web-based warehouse inventory management system built with **PHP, HTML,
 - **Item Details**: View detailed information about any item
 - **Search**: Search items by name
 
+## Screenshots
+
+### Admin
+
+| Login | Dashboard | Items |
+| :---: | :---: | :---: |
+| ![Login](screenshots/01-login.png) | ![Admin Dashboard](screenshots/02-admin-dashboard.png) | ![Admin Items](screenshots/03-admin-items.png) |
+
+| Stock Movement | Sales Report |
+| :---: | :---: |
+| ![Admin Movement](screenshots/04-admin-movement.png) | ![Admin Report](screenshots/05-admin-report.png) |
+
+### User (View Only)
+
+| Dashboard | Items (Read-only) |
+| :---: | :---: |
+| ![User Dashboard](screenshots/06-user-dashboard.png) | ![User Items](screenshots/07-user-items.png) |
+
 ## Tech Stack
 
 - **Frontend**: HTML, CSS (Pure CSS, no JavaScript)
@@ -69,6 +87,7 @@ A simple web-based warehouse inventory management system built with **PHP, HTML,
 warehousing/
 ├── db/
 │   └── init.sql         # MySQL database schema
+├── screenshots/         # UI screenshots for README
 ├── dashboard.php        # Dashboard page
 ├── items.php            # Item management page
 ├── movement.php         # Stock movement page
@@ -81,7 +100,7 @@ warehousing/
 ├── header.php           # Shared header/navigation
 ├── footer.php           # Shared footer
 ├── style.css            # Main stylesheet
-└── README.md           # This file
+└── README.md            # This file
 ```
 
 ## Database Schema

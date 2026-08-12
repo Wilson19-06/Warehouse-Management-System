@@ -141,7 +141,7 @@ include 'header.php';
 </div>
 <?php else: ?>
     <div class="alert alert-info mb-4">
-        <i class="bi bi-info-circle"></i> 您当前是 <strong>普通用户</strong>，只能查看物品列表，无法添加或编辑。
+        <i class="bi bi-info-circle"></i> You are currently a <strong>Regular User</strong> and can only view the items list; you cannot add or edit items.
     </div>
 <?php endif; ?>
 
@@ -217,7 +217,7 @@ include 'header.php';
                                             <i class="bi bi-trash3 me-1"></i>Delete
                                         </a>
                                     <?php else: ?>
-                                        <span class="text-muted">只读</span>
+                                        <span class="text-muted">Read-only</span>
                                     <?php endif; ?>
                                 </td>
                             </tr>
